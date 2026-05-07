@@ -20,4 +20,64 @@
 // Fungsi ini tidak mengembalikan nilai (void)
 // Petunjuk: jika parameter title diberikan, cari buku yang cocok
 //           jika tidak diberikan, tampilkan semua buku atau berikan informasi yang sesuai
+import { books } from "../data/books";
+import { Book } from "../types";
 
+export function addBook(book: Book): void {
+  books.push(book);
+
+  console.log(`Buku "${book.title}" berhasil ditambahkan`);
+}
+
+
+export function listBooks(): void {
+  console.log("=== DAFTAR BUKU ===");
+
+  books.forEach((book) => {
+    console.log(`
+ID: ${book.id}
+Tittle: ${book.title}
+Author: ${book.author}
+Publication Year: ${book.publicationYear}
+    `);
+  });
+}
+
+export function searchBook(keyword: string | number): void {
+
+  const foundBooks = books.filter((book) => {
+
+    // pencarian berdasarkan id
+    const matchId = book.id === Number(keyword);
+
+    // pencarian berdasarkan title
+    const matchTitle = book.title
+      .toLowerCase()
+      .includes(String(keyword).toLowerCase());
+
+    // pencarian berdasarkan author
+    const matchAuthor = book.author
+      .toLowerCase()
+      .includes(String(keyword).toLowerCase());
+
+    return matchId || matchTitle || matchAuthor;
+  });
+
+  // jika tidak ditemukan
+  if (foundBooks.length === 0) {
+    console.log("Buku tidak ditemukan");
+    return;
+  }
+
+  // tampilkan hasil
+  console.log("=== HASIL PENCARIAN ===");
+
+  foundBooks.forEach((book) => {
+    console.log(`
+ID: ${book.id}
+Judul: ${book.title}
+Penulis: ${book.author}
+Tahun: ${book.publicationYear}
+    `);
+  });
+}
